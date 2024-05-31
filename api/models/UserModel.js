@@ -2,19 +2,10 @@ import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 
 const UserSchema = new mongoose.Schema({
-  name: String,
+  firstName: String,
   lastName: String,
   email: String,
-  password: String,
-  userStatus: {
-    type: String,
-    enum: [
-      "acompanhando a leitura",
-      "aguardando a próxima leitura",
-      "não estou acompanhando a leitura",
-    ],
-    default: "acompanhando a leitura",
-  }
+  password: String
  },{timestamps: true}
 );
 

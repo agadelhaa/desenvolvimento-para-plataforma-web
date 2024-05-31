@@ -25,7 +25,7 @@ const withValidationErrors = (validateValues) => {
 };
 
 export const validateRegisterInput = withValidationErrors([
-  body("name")
+  body("firstName")
     .notEmpty()
     .withMessage("O nome precisa ser informado.")
     .trim()
@@ -53,11 +53,11 @@ export const validateRegisterInput = withValidationErrors([
     .notEmpty()
     .withMessage("A senha precisa ser informada.")
     .isLength({ min: 8 })
-    .withMessage("A senha precisa ter pelo menos 8 caracteres")
+    .withMessage("A senha precisa ter pelo menos 8 caracteres"),
 ]);
 
 export const validateUpdateUserInput = withValidationErrors([
-  body("name")
+  body("firstName")
     .notEmpty()
     .withMessage("O nome precisa ser informado.")
     .trim()
@@ -80,5 +80,5 @@ export const validateUpdateUserInput = withValidationErrors([
       if (user) {
         return res.status(400).json({ msg: "O email já está cadastrado." });
       }
-    })
+    }),
 ]);

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="pt-br" class="h-100">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Inscrição</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+
+    <!-- Fonte -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="styles.css" />
+
+    <!-- Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+  </head>
+
+  <body class="d-flex align-items-center py-4 bg-body-tertiary h-100">
+    <main class="w-100 m-auto form-container">
+      <form id="registerForm" class="needs-validation" novalidate>
+        <h1 class="h3 mb-3 fw-normal" style="color: #6b8e23">
+          Se inscreva no nosso clube
+        </h1>
+        <div class="row" style="color: #fff">
+          <div class="col-md-6">
+            <div class="mb-3" style="color: #fff">
+              <label for="validationCustom01" class="form-label">Nome</label>
+              <input
+                type="text"
+                class="form-control"
+                id="validationCustom01"
+                placeholder="Digite seu nome"
+                required
+              />
+              <div class="valid-feedback">Parece bom!</div>
+            </div>
+          </div>
+          <div class="col-md-6" style="color: #fff">
+            <div class="mb-3">
+              <label for="validationCustom02" class="form-label"
+                >Sobrenome</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="validationCustom02"
+                placeholder="Digite seu sobrenome"
+                required
+              />
+              <div class="valid-feedback">Parece bom!</div>
+            </div>
+          </div>
+        </div>
+        <div class="mb-3" style="color: #fff">
+          <label for="validationCustom03" class="form-label">E-mail</label>
+          <input
+            type="email"
+            class="form-control"
+            id="validationCustom03"
+            placeholder="Digite seu e-mail"
+            required
+          />
+          <div class="invalid-feedback">
+            Por favor, insira um e-mail válido.
+          </div>
+        </div>
+        <div class="mb-3" style="color: #fff">
+          <label for="inputPassword5" class="form-label">Senha</label>
+          <input
+            type="password"
+            id="inputPassword5"
+            class="form-control"
+            aria-describedby="passwordHelpBlock"
+            required
+          />
+          <div id="passwordHelpBlock" class="form-text" style="color: #fff">
+            Sua senha deve ter de 8 a 20 caracteres, conter letras e números e
+            não deve conter espaços, caracteres especiais ou emojis.
+          </div>
+        </div>
+        <div class="mb-3 form-check" style="color: #fff">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            value=""
+            id="invalidCheck"
+            required
+          />
+          <label class="form-check-label" for="invalidCheck">
+            Concordo com os termos e condições
+          </label>
+          <div class="invalid-feedback" style="color: #fff">
+            Você deve concordar antes de enviar.
+          </div>
+        </div>
+        <button class="btn btn-light w-100 py-2" type="submit">
+          Enviar formulário
+        </button>
+        <p class="text-body-primary mt-4 mb-3" style="color: #fff">
+          © Clube do Livro
+        </p>
+      </form>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // validação de formulário
+      (function () {
+        "use strict";
+        console.log("Form validation script loaded.");
+        var forms = document.querySelectorAll(".needs-validation");
+
+        Array.prototype.slice.call(forms).forEach(function (form) {
+          form.addEventListener(
+            "submit",
+            function (event) {
+              console.log("Form submission initiated.");
+              if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+                console.log("Form validation failed.");
+              }
+
+              if (form.checkValidity()) {
+                event.preventDefault(); // Prevent default form submission
+                form.classList.add("was-validated");
+                console.log("Form validation passed.");
+
+                // criando a resposta para a api
+                const firstName =
+                  document.getElementById("validationCustom01").value;
+                const lastName =
+                  document.getElementById("validationCustom02").value;
+                const email =
+                  document.getElementById("validationCustom03").value;
+                const password =
+                  document.getElementById("inputPassword5").value;
+
+                const formData = {
+                  firstName: firstName,
+                  lastName: lastName,
+                  email: email,
+                  password: password,
+                };
+
+                console.log("Form data:", formData);
+
+                // enviando os dados para a api
+                fetch("http://localhost:8000/api/v1/users", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify(formData),
+                })
+                  .then((response) => response.json())
+                  .then((data) => {
+                    //aviso da resposta da api (sucesso ou erro)
+                    console.log("Success:", data);
+                    if (data.success) {
+                      alert("Registro feito com sucesso!");
+                      window.location.href = "login.html"; // Redirect to login page
+                    } else {
+                      alert("Registro falhou: " + data.message);
+                    }
+                  })
+                  .catch((error) => {
+                    console.error("Error:", error);
+                    alert("Registro falhou!");
+                  });
+              } else {
+                form.classList.add("was-validated");
+              }
+            },
+            false
+          );
+        });
+      })();
+    </script>
+  </body>
+</html>
