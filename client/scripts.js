@@ -76,7 +76,8 @@ document.addEventListener('DOMContentLoaded', () => {
               <td>${user.email}</td>
               <td>
                 <button class="btn btn-danger" onclick="deleteUser('${user._id}')">Excluir</button>
-              </td>
+                <button class="btn btn-primary" onclick="editUser('${user._id}')">Editar</button>
+                </td>
             </tr>
           `).join('');
         }
@@ -85,9 +86,13 @@ document.addEventListener('DOMContentLoaded', () => {
       loadUsers();
     }
   });
+
+  function editUser(id) {
+    window.location.href = cadastro.html?id=${id};
+}
   
   async function deleteUser(id) {
-    const response = await fetch(http://localhost:8000/api/v1/users/${id}, {
+    const response = await fetch(`http://localhost:8000/api/v1/users/${id}`, {
       method: 'DELETE'
     });
   
